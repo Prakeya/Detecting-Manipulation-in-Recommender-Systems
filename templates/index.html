@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Detector</title>
+
+<style>
+body {background:#0b1324;color:white;font-family:Segoe UI;}
+.container {width:70%;margin:40px auto;}
+.card {background:#1e2a3a;padding:25px;border-radius:12px;margin-bottom:20px;}
+.scores {display:flex;gap:20px;}
+.box {flex:1;padding:30px;text-align:center;border-radius:10px;}
+.normal {border:2px solid #22c55e;}
+.manip {border:2px solid #ef4444;}
+.status {text-align:center;margin:10px;}
+.alert {color:red;}
+.ok {color:green;}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🚀 Recommender Manipulation Detector</h2>
+
+<div class="card">
+<form method="POST">
+<select name="user_id">
+{% for u in users %}
+<option>{{u}}</option>
+{% endfor %}
+</select>
+<button>Analyze</button>
+</form>
+</div>
+
+{% if result %}
+
+<div class="card scores">
+<div class="box normal">
+<h3>Normal Score</h3>
+{{result.normal}}
+</div>
+
+<div class="box manip">
+<h3>Manipulated Score</h3>
+{{result.manip}}
+</div>
+</div>
+
+<div class="status {% if result.is_manip %}alert{% else %}ok{% endif %}">
+⚠️ {{result.status}}
+</div>
+
+<!-- 🔥 GRAPH -->
+<div class="card" style="text-align:center;">
+<h3>📊 Spectral Graph</h3>
+<img src="data:image/png;base64,{{result.plot}}" width="70%">
+</div>
+
+<!-- 🔥 EXPLANATION ONLY IF MANIPULATED -->
+{% if result.is_manip %}
+<div class="card">
+<h3>🧠 Why Manipulation Happened</h3>
+<ul>
+{% for r in result.explain %}
+<li>{{r}}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% endif %}
+
+</div>
+
+</body>
+</html>
