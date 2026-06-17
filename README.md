@@ -1,86 +1,102 @@
-# Detecting-Manipulation-in-Recommender-Systems
-
-A Jacobian-based framework for detecting manipulation and hidden bias in recommender systems. This project provides a robust methodology to identify and analyze how malicious injections or biases in the rating matrix affect recommendation outcomes.
-
-## 🚀 Overview
-
-Recommender systems are increasingly targeted by "shilling attacks" or "push attacks," where fake user profiles are created to bias recommendations towards specific items. This project implements a cutting-edge detection system based on **Jacobian sensitivity analysis** and **Spectral Distortion**, providing both detection scores and visual explainability.
+# Detecting Manipulation in Recommender Systems
+### A Jacobian-based framework for identifying hidden bias and shilling attacks.
 
 ---
 
-## ✨ Features
+## Overview
 
-- **Real-time Detection**: Identify if a user's recommendation list has been manipulated.
-- **Sensitivity Analysis**: Measures the "fragility" of the recommender system using Jacobian matrices.
-- **Spectral Visualization**: Plots the singular value distribution to visually distinguish between normal and manipulated states.
-- **Explainability**: Identifies which latent factors in the recommendation space are most affected by the detected manipulation.
-- **Web Dashboard**: An intuitive Flask-based interface for analyzing user-specific recommendation health.
+Recommender systems are increasingly targeted by **shilling attacks** — where fake user profiles are injected to push specific items up the rankings. This project implements a detection system using **Jacobian Sensitivity Analysis** and **Spectral Distortion** to identify manipulation, measure system fragility, and explain which parts of the recommendation space are compromised.
+
+Built as a Flask web dashboard, it provides both detection scores and visual explainability for user-specific recommendation health.
 
 ---
 
-## 🛠️ Project Structure
-
-- `app.py`: Core Flask application containing the recommendation logic and detection algorithms.
-- `templates/index.html`: Modern, responsive web interface for the detector.
-- `A17_Report.pdf`: Comprehensive theoretical report detailing the mathematical foundation and experimental results.
-- `Detecting-Manipulation-in-Recommender-Systems.pdf`: Official project presentation/slide deck.
-- `requirements.txt`: Python package dependencies.
-
----
-
-## 🧪 Methodology
-
-The core of the detection logic rests on two advanced mathematical concepts:
+## How It Works
 
 ### 1. Jacobian Sensitivity Analysis
-The system calculates the **Jacobian matrix** $(\mathbf{J})$ of the recommendation function $f(\mathbf{R})$ with respect to the rating matrix $\mathbf{R}$.
-$$J_{ij} = \frac{\partial f_i}{\partial R_j}$$
-A high sensitivity indicates that small changes in the input ratings lead to disproportionately large changes in recommendations, a hallmark of successful manipulation.
 
-### 2. SVD and Spectral Distortion
-By applying **Singular Value Decomposition (SVD)** to the Jacobian matrix, we extract the singular values $S = \{\sigma_1, \sigma_2, \dots, \sigma_n\}$. The **Spectral Distortion Score** is calculated as the condition number:
-$$\text{Distortion Score} = \frac{\sigma_{\text{max}}}{\sigma_{\text{min}}}$$
-Manipulation typically causes "spikes" in specific singular values, significantly increasing the distortion score compared to a healthy, balanced system.
+The system computes the Jacobian matrix **J** of the recommendation function f(**R**) with respect to the rating matrix **R**:
+J_ij = ∂f_i / ∂R_j
 
----
+High sensitivity means small changes in input ratings cause disproportionately large shifts in recommendations — a hallmark of successful manipulation.
 
-## ⚙️ Setup & Installation
+### 2. SVD & Spectral Distortion
 
-### Prerequisites
-- Python 3.8+
-- `pip` package manager
+Singular Value Decomposition is applied to the Jacobian, extracting singular values σ₁, σ₂, ... σₙ. The **Spectral Distortion Score** is the condition number:
+Distortion Score = σ_max / σ_min
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Prakeya/Detecting-Manipulation-in-Recommender-Systems.git
-   cd Detecting-Manipulation-in-Recommender-Systems
-   ```
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Data Requirements**:
-   Place your `ratings.csv` and `movies.csv` (standard MovieLens format) in the root directory. The app expects columns:
-   - `ratings.csv`: `userId`, `movieId`, `rating`
-   - `movies.csv`: `movieId`, `title`
-
-### Running the App
-```bash
-python app.py
-```
-The server will start at `http://127.0.0.1:8000`.
+Manipulation causes spikes in specific singular values, sharply inflating this score compared to a healthy system.
 
 ---
 
-## 📊 Sample Output
+## Sample Output
+
 | Metric | Normal State | Manipulated State |
-| :--- | :--- | :--- |
-| Distortion Score | $\sim 5.2$ | $\sim 28.4$ |
+|---|---|---|
+| Distortion Score | ~5.2 | ~28.4 |
 | Stability | High | Critical Alert |
 
 ---
 
-## 📜 Acknowledgments
-Developed as part of the **Mathematics for Computing (MFC)** curriculum, focusing on the application of Linear Algebra and Calculus in AI/ML safety.
+## Features
+
+- **Real-time Detection** — identifies if a recommendation list has been manipulated
+- **Sensitivity Analysis** — measures system fragility via Jacobian matrices
+- **Spectral Visualisation** — plots singular value distribution for normal vs manipulated states
+- **Explainability** — pinpoints which latent factors are most affected
+- **Web Dashboard** — Flask-based interface for per-user recommendation health analysis
+
+---
+
+## Project Structure
+├── app.py                                          # Flask app, recommendation logic, detection algorithms
+
+├── templates/
+
+│   └── index.html                                  # Web interface
+
+├── ratings.csv                                     # MovieLens ratings (userId, movieId, rating)
+
+├── movies.csv                                      # MovieLens metadata (movieId, title)
+
+├── requirements.txt                                # Python dependencies
+
+├── A17_Report.pdf                                  # Theoretical report and experimental results
+
+└── Detecting-Manipulation-in-Recommender-Systems.pdf  # Project presentation
+
+---
+
+## Setup & Installation
+
+**Prerequisites:** Python 3.8+, pip
+
+```bash
+# Clone the repo
+git clone https://github.com/Prakeya/Detecting-Manipulation-in-Recommender-Systems.git
+cd Detecting-Manipulation-in-Recommender-Systems
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the app
+python app.py
+```
+
+Server starts at `http://127.0.0.1:8000`
+
+**Data:** Place `ratings.csv` and `movies.csv` (standard MovieLens format) in the root directory.
+
+---
+
+## Acknowledgements
+
+Developed as part of the **Mathematics for Computing (MFC)** curriculum, applying Linear Algebra and Calculus to AI/ML safety problems.
+
+---
+
+## Team
+
+**Prakeya S · Harshini Sree · Thiyaanesh N R · Yuvanidhi R**
+
+*Developed for academic and research purposes.*
